@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Expression</title>
+</head>
+<body>
+    <h1>Input Arithmetic Expression</h1>
+    <form id="expressionForm">
+        <label for="expression">Enter an arithmetic expression:</label><br>
+        <input type="text" id="expression" name="expression"><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById("expressionForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const expression = document.getElementById("expression").value;
+            // Send POST request with the expression to the backend
+            const response = await fetch("/add-expression", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ expression })
+            });
+            const data = await response.json();
+            console.log(data);
+        });
+    </script>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expressions List</title>
+</head>
+<body>
+    <h1>Expressions List</h1>
+    <ul id="expressionsList"></ul>
+
+    <script>
+        window.onload = async function() {
+            const response = await fetch("/get-expressions");
+            const data = await response.json();
+            const expressionsList = document.getElementById("expressionsList");
+            data.forEach(expression => {
+                const li = document.createElement("li");
+                li.textContent = `${expression.expression} - Status: ${expression.status}, Created At: ${expression.createdAt}, Updated At: ${expression.updatedAt}`;
+                expressionsList.appendChild(li);
+            });
+        };
+    </script>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operations List</title>
+</head>
+<body>
+    <h1>Operations List</h1>
+    <ul id="operationsList"></ul>
+
+    <script>
+        window.onload = async function() {
+            const response = await fetch("/get-operations");
+            const data = await response.json();
+            const operationsList = document.getElementById("operationsList");
+            data.forEach(operation => {
+                const li = document.createElement("li");
+                li.innerHTML = `${operation.operationName} - Execution Time: <input type="text" value="${operation.executionTime}">`;
+                operationsList.appendChild(li);
+            });
+        };
+    </script>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computational Resources List</title>
+</head&
+
+gt;
+<body>
+    <h1>Computational Resources List</h1>
+    <ul id="resourcesList"></ul>
+
+    <script>
+        window.onload = async function() {
+            const response = await fetch("/get-task");
+            const data = await response.json();
+            const resourcesList = document.getElementById("resourcesList");
+            data.forEach(resource => {
+                const li = document.createElement("li");
+                li.textContent = `${resource.resourceName} - Operation: ${resource.operationName}`;
+                resourcesList.appendChild(li);
+            });
+        };
+    </script>
+</body>
+</html>
